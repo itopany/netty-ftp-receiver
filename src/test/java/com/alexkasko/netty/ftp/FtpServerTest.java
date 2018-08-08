@@ -26,9 +26,11 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.util.Arrays;
 
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
+import org.apache.commons.net.ftp.FTPFile;
 import org.junit.Test;
 
 import com.butor.netty.handler.codec.ftp.CrlfStringDecoder;
@@ -71,7 +73,9 @@ public class FtpServerTest {
         assertEquals("/",client.printWorkingDirectory());
         assertTrue(client.changeWorkingDirectory("/foo"));
         assertEquals("/foo",client.printWorkingDirectory());
-        assertTrue(client.listFiles("/foo").length==0);
+        FTPFile[] ftpFiles = client.listFiles("/foo");
+        System.out.println(Arrays.toString(ftpFiles));
+        assertTrue(ftpFiles.length==2);
         assertTrue(client.storeFile("bar", new ByteArrayInputStream("content".getBytes())));
         assertTrue(client.rename("bar", "baz"));
       //  assertTrue(client.deleteFile("baz"));
